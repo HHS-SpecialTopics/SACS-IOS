@@ -6,8 +6,8 @@
 //  Copyright © 2016 Merz. All rights reserved.
 //
 
+import SystemConfiguration
 import UIKit
-
 
 class SplashViewController: UIViewController {
     @IBOutlet var webView: UIWebView!
@@ -35,9 +35,15 @@ class SplashViewController: UIViewController {
         
         // Show the home screen after a bit. Calls the show() function.
         //self.show()
-        Timer.scheduledTimer(
-            timeInterval: 2.5, target: self, selector: #selector(self.showNext), userInfo: nil, repeats: false
-        )
+        if (SplashViewController.connectedToNetwork() == true){
+            Timer.scheduledTimer(
+                timeInterval: 2.5, target: self, selector: #selector(self.showNext), userInfo: nil, repeats: false
+            )
+        } else{
+            let alert = UIAlertView(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+
+        }
     }
     
     /*
@@ -71,16 +77,30 @@ class SplashViewController: UIViewController {
         let documentDirectorPath:String = paths[0]
         // Set the path for the images
         let localImagesDirectoryPath = documentDirectorPath + "/SplashScreen/default.png"
-        if (try? Data(contentsOf: url!)) != nil{ //note that this only ensures there is a file, it doesn't validate the pictureness of it
+        if (SplashViewController.connectedToNetwork() == true){ //note that this only ensures there is a file, it doesn't validate the pictureness of it
+            if ( try? Data(contentsOf: url!)) != nil{
             let data = try? Data(contentsOf: url!)
-            //if UIImage(data: data!) != nil{ //may be needed, if there is a risk of non-picture files at link. No file at link is safe and fails the NSData if
-            bg = UIImage(data: data!)!
-            //} else{
-            
-            FileManager.default.createFile(atPath: localImagesDirectoryPath, contents: data, attributes: nil)
+            if UIImage(data: data!) != nil{ //may be needed, if there is a risk of non-picture files at link. No file at link is safe and fails the NSData if
+                bg = UIImage(data: data!)!
+                } else{
+                
+                }
+                FileManager.default.createFile(atPath: localImagesDirectoryPath, contents: data, attributes: nil)
+            } else{
+                print("failed to contact website")
+                if(try! UIImage(contentsOfFile: localImagesDirectoryPath) != nil){
+                    bg = UIImage(contentsOfFile: localImagesDirectoryPath)!
+                } else{
+                    //bg = UIImage(named: "homesteadhigh.png")!;
+                }
+            }
         } else{
             print("failed to contact website")
-            bg = UIImage(contentsOfFile: localImagesDirectoryPath)!
+            if(try! UIImage(contentsOfFile: localImagesDirectoryPath) != nil){
+                bg = UIImage(contentsOfFile: localImagesDirectoryPath)!
+            } else{
+                bg = UIImage(named: "homesteadhigh.png")!;
+            }
         }
         //print(localImagesDirectoryPath)
         let bgView = UIImageView(image: bg)
@@ -111,9 +131,33 @@ class SplashViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    class func connectedToNetwork() -> Bool {
+        
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                SCNetworkReachabilityCreateWithAddress(nil, $0)
+            }
+        }) else {
+            return false
+        }
+        
+        var flags: SCNetworkReachabilityFlags = []
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+            return false
+        }
+        
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        
+        return (isReachable && !needsConnection)
+    }
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }
-
-
-
 
 

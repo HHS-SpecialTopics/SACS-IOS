@@ -14,19 +14,19 @@ class WebView: UIViewController {
     @IBOutlet var webView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        var url = "https://sacs-backend-chrisblutz.c9users.io/archives/"
+        var url = "https://sacs-backend-chrisblutz.c9users.io/"
         // pages on 51,54,56
         url+="\(test)"
         let requestURL = URL(string:url)
         let requesting = URLRequest(url: requestURL!)
         webView.loadRequest(requesting)
         print(test)
-        let notification = UILocalNotification()
+        /*let notification = UILocalNotification()
         notification.alertBody = "test" // text that will be displayed in the notification
         notification.alertAction = "open"
         notification.fireDate = Date(timeIntervalSinceReferenceDate: 5) // todo item due date (when notification will be fired) notification.soundName = UILocalNotificationDefaultSoundName // play default sound
         // Do any additional setup after loading the view, typically from a nib.
-        UIApplication.shared.scheduleLocalNotification(notification)
+        UIApplication.shared.scheduleLocalNotification(notification)*/
     }
     
     override func didReceiveMemoryWarning() {
@@ -34,5 +34,8 @@ class WebView: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
 }
