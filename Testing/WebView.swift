@@ -9,11 +9,13 @@
 import UIKit
 import Foundation
 
-class WebView: UIViewController {
+class WebView: UIViewController, UIWebViewDelegate {
     var test = 0
     @IBOutlet var webView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        webView.delegate = self
         var url = "https://sacs-backend-chrisblutz.c9users.io/"
         // pages on 51,54,56
         url+="\(test)"
@@ -37,5 +39,26 @@ class WebView: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        print("entered webView")
+        switch navigationType {
+        case .linkClicked:
+            // Open links in Safari
+            guard let url = request.url else { return true }
+            if (url.absoluteString.range(of: "sacs-back") != nil) {
+                return true
+            } else {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    // openURL(_:) is deprecated in iOS 10+.
+                    UIApplication.shared.openURL(url)
+                }
+            }
+            return false
+        default:
+            // Handle other navigation types...
+            return true
+        }
+    }
 }

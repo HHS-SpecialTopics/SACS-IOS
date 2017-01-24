@@ -68,10 +68,6 @@ class SplashViewController: UIViewController {
         let screenSize: CGRect = UIScreen.main.bounds
         var bg = UIImage()
         let url = URL(string: "https://sacs-backend-chrisblutz.c9users.io/wp-content/uploads/2016/12/SplashScreen.png")
-        //http://pngimagesfree.com/NATURE/Grass/grass_png_paradise.png
-        //http://pngimg.com/upload/small/Acorn_PNG744.png
-        //http://pngimg.com/upload/grass_PNG10863.png
-        //http://www.pngpix.com/wp-content/uploads/2016/03/Gorilla-PNG-Image.png
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         // Get the Document directory path
         let documentDirectorPath:String = paths[0]
@@ -79,13 +75,14 @@ class SplashViewController: UIViewController {
         let localImagesDirectoryPath = documentDirectorPath + "/SplashScreen/default.png"
         if (SplashViewController.connectedToNetwork() == true){ //note that this only ensures there is a file, it doesn't validate the pictureness of it
             if ( try? Data(contentsOf: url!)) != nil{
-            let data = try? Data(contentsOf: url!)
-            if UIImage(data: data!) != nil{ //may be needed, if there is a risk of non-picture files at link. No file at link is safe and fails the NSData if
-                bg = UIImage(data: data!)!
+                let data = try? Data(contentsOf: url!)
+                if UIImage(data: data!) != nil{
+                    bg = UIImage(data: data!)!
                 } else{
-                
+                    
                 }
                 FileManager.default.createFile(atPath: localImagesDirectoryPath, contents: data, attributes: nil)
+                
             } else{
                 print("failed to contact website")
                 if(try! UIImage(contentsOfFile: localImagesDirectoryPath) != nil){
@@ -104,8 +101,8 @@ class SplashViewController: UIViewController {
         }
         //print(localImagesDirectoryPath)
         let bgView = UIImageView(image: bg)
-        
-        bgView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
+        //bgView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
+        //bgView.addConstraint(<#T##constraint: NSLayoutConstraint##NSLayoutConstraint#>)
         self.view.addSubview(bgView)
     }
     
