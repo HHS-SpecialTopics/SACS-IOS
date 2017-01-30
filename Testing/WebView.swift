@@ -43,8 +43,18 @@ class WebView: UIViewController, UIWebViewDelegate {
         print("entered webView")
         switch navigationType {
         case .linkClicked:
+            print("link")
             // Open links in Safari
             guard let url = request.url else { return true }
+            if(url.absoluteString.range(of: "sacs://") != nil )
+            {
+                print("got request")
+                // parse custom URL to extract parameter
+                if(url.absoluteString.range(of: "settings") != nil ){
+                    self.performSegue(withIdentifier: "showSettings", sender: self)
+                }
+                return false; // return false, so webView won't actually try to load this fake request
+            }
             if (url.absoluteString.range(of: "sacs-back") != nil) {
                 return true
             } else {
@@ -57,7 +67,8 @@ class WebView: UIViewController, UIWebViewDelegate {
             }
             return false
         default:
-            // Handle other navigation types...
+            print("default")
+                        // Handle other navigation types...
             return true
         }
     }
