@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "25F93644AC61E25C3C37EF9749A37A36E33B4F78",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5A1D15B7F9E64BD0D0888D467284FDE58C23AFC2" : 9223372036854775807,
+    "25F93644AC61E25C3C37EF9749A37A36E33B4F78" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1D4FC2BF-0039-4339-AEFB-32880DC94BB9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5A1D15B7F9E64BD0D0888D467284FDE58C23AFC2" : "SACS-IOS\/Testing\/",
+    "25F93644AC61E25C3C37EF9749A37A36E33B4F78" : "SACS-IOS\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Sacs",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Sacs.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/NMerz\/SACS-IOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "25F93644AC61E25C3C37EF9749A37A36E33B4F78"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/NMerz\/Testing.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5A1D15B7F9E64BD0D0888D467284FDE58C23AFC2"
+    }
+  ]
+}

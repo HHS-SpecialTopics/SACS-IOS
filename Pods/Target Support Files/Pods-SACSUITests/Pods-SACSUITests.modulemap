@@ -1,0 +1,6 @@
+framework module Pods_SACSUITests {
+  umbrella header "Pods-SACSUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
