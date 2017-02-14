@@ -17,7 +17,6 @@
 		9D575DAD1DA7B9E000A950B8 /* TestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D575DAC1DA7B9E000A950B8 /* TestingTests.swift */; };
 		9D575DB81DA7B9E000A950B8 /* TestingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D575DB71DA7B9E000A950B8 /* TestingUITests.swift */; };
 		9D575DC61DA7E8AB00A950B8 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D575DC51DA7E8AB00A950B8 /* TableViewController.swift */; };
-		9D86950F1E4B73FA006D6FC6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9D86950E1E4B73FA006D6FC6 /* Settings.bundle */; };
 		9D8AB8031E3A579C00F0F72C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8AB8021E3A579C00F0F72C /* SettingsView.swift */; };
 		9DA1B6711DC6D32000750591 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA1B6701DC6D32000750591 /* WebView.swift */; };
 		9DB30EFA1DABE1A1001B0BDC /* homesteadhighlowres.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB30EF91DABE1A1001B0BDC /* homesteadhighlowres.png */; };
@@ -72,7 +71,6 @@
 		9D575DB71DA7B9E000A950B8 /* TestingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingUITests.swift; sourceTree = "<group>"; };
 		9D575DB91DA7B9E000A950B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D575DC51DA7E8AB00A950B8 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		9D86950E1E4B73FA006D6FC6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		9D8AB8021E3A579C00F0F72C /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9DA1B6701DC6D32000750591 /* WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		9DB30EF91DABE1A1001B0BDC /* homesteadhighlowres.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = homesteadhighlowres.png; path = ../../../Downloads/homesteadhighlowres.png; sourceTree = "<group>"; };
@@ -150,7 +148,6 @@
 				9D575DC51DA7E8AB00A950B8 /* TableViewController.swift */,
 				9DA1B6701DC6D32000750591 /* WebView.swift */,
 				9D8AB8021E3A579C00F0F72C /* SettingsView.swift */,
-				9D86950E1E4B73FA006D6FC6 /* Settings.bundle */,
 			);
 			name = SACS;
 			path = Testing;
@@ -340,7 +337,6 @@
 				9D575D9F1DA7B9DF00A950B8 /* Assets.xcassets in Resources */,
 				9D2DF75F1E04AC2F00FFFD3B /* homesteadhigh.png in Resources */,
 				9DB30EFA1DABE1A1001B0BDC /* homesteadhighlowres.png in Resources */,
-				9D86950F1E4B73FA006D6FC6 /* Settings.bundle in Resources */,
 				9D575D9D1DA7B9DF00A950B8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
