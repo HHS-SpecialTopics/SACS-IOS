@@ -11,11 +11,16 @@ import Foundation
 
 class WebView: UIViewController, UIWebViewDelegate {
     @IBOutlet var webView: UIWebView!
+    deinit {
+        // make sure to remove the observer when this view controller is dismissed/deallocated
+        NotificationCenter.default.removeObserver(self, name: nil, object: nil)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         webView.delegate = self
-        let url = "http://sacs.school"//https://sacs-backend-chrisblutz.c9users.io/ or https://sacs-sacsnews.c9users.io
+        let url = "sacs.school"//https://sacs-backend-chrisblutz.c9users.io/ or https://sacs-sacsnews.c9users.io
+        //http://sacs.school
         // pages on 51,54,56
         let requestURL = URL(string:url)
         let requesting = URLRequest(url: requestURL!)
@@ -28,7 +33,12 @@ class WebView: UIViewController, UIWebViewDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         UIApplication.shared.scheduleLocalNotification(notification)*/
     
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+    }
+    
+    
+    func willEnterForeground() {
+        webView.reload()
     }
     
     override func viewWillAppear(_ animated: Bool) {

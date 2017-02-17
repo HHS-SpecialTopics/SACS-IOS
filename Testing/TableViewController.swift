@@ -23,6 +23,7 @@ class TableViewController: UITableViewController {
         settings.append("Delays")
         settings.append("Cancellations")
         settings.append("News articles")
+        settings.append("Other")
         // Do any additional setup after loading the view, typically from a nib.
         tableView.dataSource = self
         tableView.delegate = self
@@ -47,15 +48,17 @@ class TableViewController: UITableViewController {
             print("First launch, enabling notifications.")
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
+        
     }
-    
+
+
     /*override var prefersStatusBarHidden: Bool {
         return true
     }*/
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = false
-        navigationItem.title = "Settings"
+        navigationItem.title = "Notifications"
     }
     
     override func viewDidDisappear(_ animated: Bool) {
