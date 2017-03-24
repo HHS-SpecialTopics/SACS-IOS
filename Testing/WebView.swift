@@ -19,7 +19,7 @@ class WebView: UIViewController, UIWebViewDelegate {
         super.viewDidLoad()
         
         webView.delegate = self
-        let url = "sacs.school"//https://sacs-backend-chrisblutz.c9users.io/ or https://sacs-sacsnews.c9users.io
+        let url = "http://sacs.school"//https://sacs-backend-chrisblutz.c9users.io/ or https://sacs-sacsnews.c9users.io
         //http://sacs.school
         // pages on 51,54,56
         let requestURL = URL(string:url)

@@ -17,13 +17,18 @@ class TableViewController: UITableViewController {
     var pageToOpen = 0
     var settings: Array<String> = Array()
     var settingsNS = UserDefaults.standard
-
+    let settingsDictionary: NSDictionary = [
+        "All Notifications" : "all_notifications",
+        "Delays/Cancellations" : "status_notifications",
+        "News Articles" : "news_notifications"
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        settings.append("Delays")
-        settings.append("Cancellations")
-        settings.append("News articles")
-        settings.append("Other")
+        settings.append("All Notifications")
+        settings.append("Delays/Cancellations")
+        settings.append("News Articles")
+        //settings.append("Other")
         // Do any additional setup after loading the view, typically from a nib.
         tableView.dataSource = self
         tableView.delegate = self
@@ -42,8 +47,12 @@ class TableViewController: UITableViewController {
         } else {
             for x in 0...(settings.count-1)
             {
-                OneSignal.sendTag(settings[x], value: "true")
-                settingsNS.set(true, forKey: settings[x])
+                print(x)
+                /*OneSignal.sendTag(settings[x], value: "true")
+                settingsNS.set(true, forKey: settings[x])*/
+                print((settingsDictionary.allValues[x] as AnyObject))
+                OneSignal.sendTag((settingsDictionary.allValues[x] as AnyObject) as! String, value: "true")
+                settingsNS.set(true, forKey: (settingsDictionary.allValues[x] as AnyObject) as! String)
             }
             print("First launch, enabling notifications.")
             UserDefaults.standard.set(true, forKey: "launchedBefore")
@@ -82,7 +91,7 @@ class TableViewController: UITableViewController {
         cell.textLabel?.text = settings[indexPath.item]
         var switchDemo: UISwitch!
         switchDemo = UISwitch()
-        switchDemo.isOn = settingsNS.bool(forKey: settings[indexPath.item])
+        switchDemo.isOn = settingsNS.bool(forKey: ((settingsDictionary.allValues[indexPath.item] as AnyObject) as! String))
         //finds mid y cordinant of cell; subtracts cell height*number of cells to make sure it is in the right cell, every cell it adds an extra cell's worth of height to .midY; subtracts 1/2 switch height to center switch
         switchDemo.frame.origin.y = cell.frame.midY-cell.frame.height*CGFloat(indexPath.item)-switchDemo.frame.height/2
         switchDemo.frame.origin.x = cell.frame.width*0.8
@@ -129,7 +138,23 @@ class TableViewController: UITableViewController {
     @IBAction func buttonClicked(sender: UISwitch){
         //let switchIndex = 0
         let switchIndex = switches.index(of: sender)!
-        let setting = settings[switchIndex]
+        //let setting = settings[switchIndex]
+        let setting = (settingsDictionary.allValues[switchIndex] as AnyObject) as! String
+        if (switchIndex  == 0){//all notifications is changed; disable other switches and turn off their notifications
+            for individualSetting in settings{
+                if (switches[0].isOn == true){
+                    //OneSignal.sendTag(individualSetting, value: "true")
+                    //settingsNS.set(true, forKey: individualSetting)
+                    switches[settings.index(of: individualSetting)!].isEnabled = true
+                }
+                else{
+                    //OneSignal.sendTag(individualSetting, value: "false")
+                    //settingsNS.set(false, forKey: individualSetting)
+                    switches[settings.index(of: individualSetting)!].isEnabled = false
+                }
+            }
+            switches[0].isEnabled = true
+        }
         if (switches[switchIndex].isOn == true){
             OneSignal.sendTag(setting, value: "true")
             settingsNS.set(true, forKey: setting)
