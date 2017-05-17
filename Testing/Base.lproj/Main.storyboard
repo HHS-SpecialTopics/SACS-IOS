@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BL2-X3-MdN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1421" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BL2-X3-MdN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,10 +27,10 @@
             </objects>
             <point key="canvasLocation" x="-1447" y="226"/>
         </scene>
-        <!--Splash View Controller-->
+        <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SplashViewController" customModule="SACS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -82,7 +83,7 @@
             <objects>
                 <tableViewController id="xlr-Im-DNU" customClass="TableViewController" customModule="SACS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="itK-97-d4b">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -118,7 +119,7 @@
                         <viewControllerLayoutGuide type="bottom" id="uAF-kz-BxO"/>
                     </layoutGuides>
                     <view key="view" contentMode="center" id="m6E-AD-MUh">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iix-FB-CbH">
@@ -163,9 +164,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="457-dc-Kba" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="uFz-3r-dWj">
+            <objects>
+                <viewController modalPresentationStyle="overFullScreen" id="Rme-AO-KpF" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nbl-dF-j1B"/>
+                        <viewControllerLayoutGuide type="bottom" id="WSm-am-NsP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EOR-ny-RHY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="homesteadhigh.png" translatesAutoresizingMaskIntoConstraints="NO" id="wWr-hu-KPI">
+                                <rect key="frame" x="67" y="270" width="240" height="128"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="wWr-hu-KPI" secondAttribute="height" multiplier="15:8" id="cUA-wj-J2y"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3GX-qe-8GU">
+                                <rect key="frame" x="124" y="415" width="127" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                <state key="normal" title="Reload">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="wWr-hu-KPI" secondAttribute="trailing" id="l5K-mS-r2o"/>
+                            <constraint firstItem="wWr-hu-KPI" firstAttribute="top" secondItem="nbl-dF-j1B" secondAttribute="bottom" id="rN5-Rs-gD3"/>
+                            <constraint firstItem="wWr-hu-KPI" firstAttribute="leading" secondItem="EOR-ny-RHY" secondAttribute="leadingMargin" id="sHk-xt-6F3"/>
+                            <constraint firstItem="WSm-am-NsP" firstAttribute="top" secondItem="wWr-hu-KPI" secondAttribute="bottom" id="wpU-bR-F0a"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <segue destination="qcr-Qn-Wbz" kind="show" id="OFH-LZ-pbN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="agQ-mh-Ozh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="homesteadhigh.png" width="1280" height="1920"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HER-HV-FOA"/>
+        <segue reference="OFH-LZ-pbN"/>
         <segue reference="dNa-4g-u47"/>
     </inferredMetricsTieBreakers>
 </document>

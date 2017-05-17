@@ -9,10 +9,18 @@
 import SystemConfiguration
 import UIKit
 
-class SplashViewController: UIViewController {
+//not finshied not refered to
+
+class HolderView: UIViewController {
     @IBOutlet var webView: UIWebView!
     override func viewDidLoad() {
-        //print("Reached loading of splash screen")
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground2), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
+        //watch for taps
+        
+        
+        /*//print("Reached loading of splash screen")
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         // Get the Document directory path
         let documentDirectorPath:String = paths[0]
@@ -28,14 +36,16 @@ class SplashViewController: UIViewController {
                 print("this folder already exists - or something went wrong")
             }
         }
-        super.viewDidLoad()
-        
-        addBackgroundImage()
-        //addLogo()
-        
-        // Show the home screen after a bit. Calls the show() function.
-        //self.show()
-        if (SplashViewController.connectedToNetwork() == true){
+         
+         addBackgroundImage()
+         //addLogo()
+         
+         // Show the home screen after a bit. Calls the show() function.
+         //self.show()
+         */
+
+
+        /*if (HolderView.connectedToNetwork() == true){
             Timer.scheduledTimer(
                 timeInterval: 2.5, target: self, selector: #selector(self.showNext), userInfo: nil, repeats: false
             )
@@ -43,9 +53,15 @@ class SplashViewController: UIViewController {
             let alert = UIAlertView(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", delegate: nil, cancelButtonTitle: "OK")
             alert.show()
 
-        }
+        }*/
     }
-    
+    func willEnterForeground2() {
+        //send to web view
+        
+    }
+    func touchesEnded(touches: NSSet!, withEvent event: UIEvent!) {
+        print("test")
+    }
     /*
      * Gets rid of the status bar
      *
@@ -73,7 +89,7 @@ class SplashViewController: UIViewController {
         let documentDirectorPath:String = paths[0]
         // Set the path for the images
         let localImagesDirectoryPath = documentDirectorPath + "/SplashScreen/default.png"
-        if (SplashViewController.connectedToNetwork() == true){ //note that this only ensures there is a file, it doesn't validate the pictureness of it
+        if (HolderView.connectedToNetwork() == true){ //note that this only ensures there is a file, it doesn't validate the pictureness of it
             if ( try? Data(contentsOf: url!)) != nil{
                 let data = try? Data(contentsOf: url!)
                 if UIImage(data: data!) != nil{

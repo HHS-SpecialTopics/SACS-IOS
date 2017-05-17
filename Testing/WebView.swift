@@ -8,16 +8,19 @@
 
 import UIKit
 import Foundation
+import SystemConfiguration
+
 
 class WebView: UIViewController, UIWebViewDelegate {
     @IBOutlet var webView: UIWebView!
     deinit {
-        // make sure to remove the observer when this view controller is dismissed/deallocated
+        //make sure to remove the observer when this view controller is dismissed/deallocated
         NotificationCenter.default.removeObserver(self, name: nil, object: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+
         webView.delegate = self
         let url = "http://sacs.school"//https://sacs-backend-chrisblutz.c9users.io/ or https://sacs-sacsnews.c9users.io
         //http://sacs.school
@@ -33,9 +36,39 @@ class WebView: UIViewController, UIWebViewDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         UIApplication.shared.scheduleLocalNotification(notification)*/
     
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        if (WebView.connectedToNetwork() == true){
+        } else{
+            let alert = UIAlertView(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", delegate: nil, cancelButtonTitle: "OK")
+            alert.show()
+            //then the user needs to be sent back to the splash screen
+        }
+        
     }
     
+    class func connectedToNetwork() -> Bool {
+        
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                SCNetworkReachabilityCreateWithAddress(nil, $0)
+            }
+        }) else {
+            return false
+        }
+        
+        var flags: SCNetworkReachabilityFlags = []
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+            return false
+        }
+        
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        
+        return (isReachable && !needsConnection)
+    }
     
     func willEnterForeground() {
         webView.reload()
@@ -61,7 +94,7 @@ class WebView: UIViewController, UIWebViewDelegate {
             print("link")
             // Open links in Safari
             guard let url = request.url else { return true }
-            if(url.absoluteString.range(of: "sacs://") != nil )
+            if(url.absoluteString.range(of: "sacs://") != nil )//will need to be changed for new site
             {
                 print("got request")
                 // parse custom URL to extract parameter
@@ -70,7 +103,7 @@ class WebView: UIViewController, UIWebViewDelegate {
                 }
                 return false; // return false, so webView won't actually try to load this fake request
             }
-            if (url.absoluteString.range(of: "sacsnews") != nil) {
+            if ((url.absoluteString.range(of: "sacsnews") != nil) || (url.absoluteString.range(of: "icalfeed.ashx") != nil)) {
                 return true
             } else {
                 if #available(iOS 10.0, *) {

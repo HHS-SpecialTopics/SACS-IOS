@@ -6,9 +6,14 @@
 //  Copyright © 2016 Merz. All rights reserved.
 //
 
+
+//CURRENTLY 3 NEEDS search: "NEED"
+
+
 import Foundation
 import UIKit
 import OneSignal
+import EventKitUI
 
 class TableViewController: UITableViewController {
     //@IBOutlet var tableView: UITableView!
@@ -38,8 +43,59 @@ class TableViewController: UITableViewController {
         self.navigationController?.isNavigationBarHidden = false
         //navigationController?.navigationBar.barTintColor = UIColor.black
         navigationController?.navigationBar.backgroundColor = UIColor.white
-        self.tableView.tableFooterView = UIView(frame: CGRect())
+        let accessChecker = EKEventStore()
+        /*if accessChecker.requestAccess(to: EKEntityType.event){
+            completion()
+        } else {
+            
+        }*/
+        //var errorHolder = NSError()
+        //var grantHolder = NSNull()
+        //var errorHolder = NSNull()
+
+        /*let footerView = UIView(frame: CGRect())
+        let subscribeButton = UIButton()
+        subscribeButton.backgroundRect(forBounds: CGRect(x: 0, y: 0, width: 1000, height: 1000))
+        //subscribeButton.addTarget(self, action: "subscribeToCalander", for: .touchUpInside)
+        footerView.addSubview(subscribeButton)
+        footerView.backgroundColor = UIColor(colorLiteralRed: 100, green: 100, blue: 1, alpha: 100)*/
+        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 70))
+        //let bottomOfTable = UIView(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 1))
+        //bottomOfTable.backgroundColor = UIColor.lightGray
+        //customView.addSubview(bottomOfTable)
+        //customView.backgroundColor = UIColor.blue
         
+        /* This section is a calendar subscription button. It however suffered death by prompts. Due to privacy it is nigh on impossible to check if the user is actually subscribed and adjust behavior accordingly
+         */
+        let button = UIButton(frame: CGRect(x: self.view.frame.width/4, y: 10, width: self.view.frame.width/2, height: 50))
+        button.layer.cornerRadius = 10
+        button.backgroundColor = UIColor.init(white: 0.85, alpha: 0.5)
+        button.setTitleColor(UIColor.init(white: 0.15, alpha: 1), for: UIControlState.normal)
+        if (checkICS() == true){
+            print("un")
+            button.setTitle("Unsubscribe from Calendar", for: .normal)
+        } else{
+            button.setTitle("Subscribe to Calendar", for: .normal)
+        }
+        button.addTarget(self, action: #selector(subscribeToCalander), for: .touchUpInside)
+        //NEED: Add a title for this Calendar section
+        customView.addSubview(button)
+        
+        //NEED: Include text for unsubscribing || Also, consider revamping no calendar access
+        
+        if let result = try? accessChecker.requestAccess(to: EKEntityType.event, completion: {
+            (success: Bool, error: Error?) in
+            
+            print("Got permission = \(success); error = \(error)")
+            if(success == false){
+                button.setTitle("No Calendar Access", for: .normal)
+            }
+            
+        }){
+            print("unecessary success?; or I always print?")
+        }
+        
+        self.tableView.tableFooterView = customView
         //first launch code; currently to enable all settings
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
@@ -57,9 +113,72 @@ class TableViewController: UITableViewController {
             print("First launch, enabling notifications.")
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
-        
+        //UIApplication.shared.openURL(NSURL(string: "webcal://www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1")! as URL)
     }
+    
+    func checkICS() -> Bool {
+        let eventStrore = EKEventStore()
+        var alreadySubcribed = false
+        var spin = true
+        eventStrore.requestAccess(to: EKEntityType.event) { (granted, error) -> Void in
+            
+            let allCalendars = eventStrore.calendars(for: EKEntityType.event)
+            for currentCal : EKCalendar in allCalendars {
+                if (currentCal.type == EKCalendarType.subscription && currentCal.title == "www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1") {
+                    print("Already Subscribed 2")
+                    alreadySubcribed = true
+                    print("alreadysubscribed 3: \(alreadySubcribed)")
 
+                }
+            }
+            spin = false
+        }
+        while (spin == true) {
+            sleep(1)
+        }
+        print("alreadysubscribed: \(alreadySubcribed)")
+        return alreadySubcribed
+    }
+    
+    @IBAction func subscribeToCalander(sender: AnyObject) {
+        //var err = NSError()
+        //UIApplication.shared.openURL(URL(string: "webcal://www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1")!)
+        let eventStore = EKEventStore()
+        /*if let result = try? eventStore.requestAccess(to: EKEntityType.event) {
+            print(result)
+            // doSomething succeeded, and result is unwrapped.
+        } else {
+            // Ouch, doSomething() threw an error.
+        }*/
+        eventStore.requestAccess(to: EKEntityType.event) { (granted, error) -> Void in
+            let calendarList = eventStore.calendars(for: EKEntityType.event)
+            var sacsIndex = 0
+            for x in 0..<calendarList.count {
+                print(calendarList[x].title)
+                if (calendarList[x].title == "www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1") {
+                    sacsIndex = x
+                }
+            }
+            if (self.checkICS() == false){
+                UIApplication.shared.openURL(URL(string: "webcal://www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1")!)//webcal://www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1
+                //NEED:
+            } else {
+                if let result = try? eventStore.removeCalendar(calendarList[sacsIndex], commit: true) {
+                    //eventStore.reset()
+                    print(result)
+                    print("removal success")
+                } else {
+                    print("removal faliure")
+                }
+                //calendarList[0]
+            }
+            
+        }
+        
+        /*try {
+            eventStore.removeCalendar(EKCalendar(, commit: true)
+        }*/
+    }
 
     /*override var prefersStatusBarHidden: Bool {
         return true

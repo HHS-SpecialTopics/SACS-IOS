@@ -10,7 +10,7 @@
 		1502B57703EF884670CD6AF2 /* Pods_TestingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5564137D83D77AE40B036A42 /* Pods_TestingUITests.framework */; };
 		9D2DF75F1E04AC2F00FFFD3B /* homesteadhigh.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2DF75E1E04AC2F00FFFD3B /* homesteadhigh.png */; };
 		9D575D981DA7B9DF00A950B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D575D971DA7B9DF00A950B8 /* AppDelegate.swift */; };
-		9D575D9A1DA7B9DF00A950B8 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D575D991DA7B9DF00A950B8 /* SplashViewController.swift */; };
+		9D575D9A1DA7B9DF00A950B8 /* HolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D575D991DA7B9DF00A950B8 /* HolderView.swift */; };
 		9D575D9D1DA7B9DF00A950B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D575D9B1DA7B9DF00A950B8 /* Main.storyboard */; };
 		9D575D9F1DA7B9DF00A950B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D575D9E1DA7B9DF00A950B8 /* Assets.xcassets */; };
 		9D575DA21DA7B9DF00A950B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D575DA01DA7B9DF00A950B8 /* LaunchScreen.storyboard */; };
@@ -59,7 +59,7 @@
 		9D4A949A1DF9BE0800646A43 /* Testing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Testing.entitlements; sourceTree = "<group>"; };
 		9D575D941DA7B9DF00A950B8 /* SACS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SACS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D575D971DA7B9DF00A950B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9D575D991DA7B9DF00A950B8 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		9D575D991DA7B9DF00A950B8 /* HolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolderView.swift; sourceTree = "<group>"; };
 		9D575D9C1DA7B9DF00A950B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9D575D9E1DA7B9DF00A950B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D575DA11DA7B9DF00A950B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 				9D2DF75E1E04AC2F00FFFD3B /* homesteadhigh.png */,
 				9DB30EF91DABE1A1001B0BDC /* homesteadhighlowres.png */,
 				9D575D971DA7B9DF00A950B8 /* AppDelegate.swift */,
-				9D575D991DA7B9DF00A950B8 /* SplashViewController.swift */,
+				9D575D991DA7B9DF00A950B8 /* HolderView.swift */,
 				9D575D9B1DA7B9DF00A950B8 /* Main.storyboard */,
 				9D575D9E1DA7B9DF00A950B8 /* Assets.xcassets */,
 				9D575DA01DA7B9DF00A950B8 /* LaunchScreen.storyboard */,
@@ -501,7 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D8AB8031E3A579C00F0F72C /* SettingsView.swift in Sources */,
-				9D575D9A1DA7B9DF00A950B8 /* SplashViewController.swift in Sources */,
+				9D575D9A1DA7B9DF00A950B8 /* HolderView.swift in Sources */,
 				9DA1B6711DC6D32000750591 /* WebView.swift in Sources */,
 				9D575DC61DA7E8AB00A950B8 /* TableViewController.swift in Sources */,
 				9D575D981DA7B9DF00A950B8 /* AppDelegate.swift in Sources */,

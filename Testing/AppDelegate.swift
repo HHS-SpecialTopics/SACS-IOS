@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         application.registerUserNotificationSettings(UIUserNotificationSettings(types: .alert, categories: nil))//cleared inside of method
         application.registerForRemoteNotifications()
-        if (SplashViewController.connectedToNetwork() == true){
+        if (HolderView.connectedToNetwork() == true){
             OneSignal.initWithLaunchOptions(launchOptions, appId: "6c491210-e3f1-4a1a-a7ca-0dd4ea3519f6")
         }
         return true
