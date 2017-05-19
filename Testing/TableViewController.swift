@@ -7,8 +7,6 @@
 //
 
 
-//CURRENTLY 3 NEEDS search: "NEED"
-
 
 import Foundation
 import UIKit
@@ -28,8 +26,27 @@ class TableViewController: UITableViewController {
         "News Articles" : "news_notifications"
     ]
     
+    deinit {
+        //make sure to remove the observer when this view controller is dismissed/deallocated
+        NotificationCenter.default.removeObserver(self, name: nil, object: nil)
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.orientationLock = UIInterfaceOrientationMask.all
+        }
+    }
+    
+    func reloadView() {
+        print("reloading")
+        //self.view.setNeedsDisplay()//seems to reload only if there is a change. This seems good
+        self.viewDidLoad()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.orientationLock = UIInterfaceOrientationMask.portrait
+        }
+        self.tableView.isScrollEnabled = false
         settings.append("All Notifications")
         settings.append("Delays/Cancellations")
         settings.append("News Articles")
@@ -59,7 +76,7 @@ class TableViewController: UITableViewController {
         //subscribeButton.addTarget(self, action: "subscribeToCalander", for: .touchUpInside)
         footerView.addSubview(subscribeButton)
         footerView.backgroundColor = UIColor(colorLiteralRed: 100, green: 100, blue: 1, alpha: 100)*/
-        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 70))
+        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 380))
         //let bottomOfTable = UIView(frame: CGRect(x:0, y:0, width: self.view.frame.width, height: 1))
         //bottomOfTable.backgroundColor = UIColor.lightGray
         //customView.addSubview(bottomOfTable)
@@ -67,34 +84,47 @@ class TableViewController: UITableViewController {
         
         /* This section is a calendar subscription button. It however suffered death by prompts. Due to privacy it is nigh on impossible to check if the user is actually subscribed and adjust behavior accordingly
          */
-        let button = UIButton(frame: CGRect(x: self.view.frame.width/4, y: 10, width: self.view.frame.width/2, height: 50))
+        let button = UIButton(frame: CGRect(x: self.view.frame.width/4, y: 60, width: self.view.frame.width/2, height: 50))
         button.layer.cornerRadius = 10
         button.backgroundColor = UIColor.init(white: 0.85, alpha: 0.5)
         button.setTitleColor(UIColor.init(white: 0.15, alpha: 1), for: UIControlState.normal)
-        if (checkICS() == true){
-            print("un")
-            button.setTitle("Unsubscribe from Calendar", for: .normal)
-        } else{
-            button.setTitle("Subscribe to Calendar", for: .normal)
-        }
+        button.setTitle("Subscribe", for: .normal)
         button.addTarget(self, action: #selector(subscribeToCalander), for: .touchUpInside)
-        //NEED: Add a title for this Calendar section
+        let calTitle = UITextView(frame: CGRect(x: 0.0, y: 0, width: self.view.frame.width, height: 50))
+        calTitle.text = "Calendar"
+        calTitle.font = .systemFont(ofSize: 36)
+        calTitle.textAlignment = .center
+        calTitle.isScrollEnabled = false
+        calTitle.isEditable = false
+        customView.addSubview(calTitle)
+        
         customView.addSubview(button)
+        let textView = UITextView(frame: CGRect(x: 0.0, y: 60, width: self.view.frame.width, height: 170))
+        textView.text = "Instructions to remove the calendar:\n   1) Go to the settings app\n   2) Select \"Calendar\"\n   3) Select \"Accounts\"\n   4) Select \"Subscribed Caladendars\"\n   (the subtitle should include sacs)\n   5) Scroll down and select \"Delete\""
+        textView.font = .systemFont(ofSize: 18)
+        textView.isEditable = false
+        customView.addSubview(textView)
         
-        //NEED: Include text for unsubscribing || Also, consider revamping no calendar access
-        
+        //check access to calendar
         if let result = try? accessChecker.requestAccess(to: EKEntityType.event, completion: {
             (success: Bool, error: Error?) in
             
             print("Got permission = \(success); error = \(error)")
             if(success == false){
                 button.setTitle("No Calendar Access", for: .normal)
+            } else {
+                print("YES access")
             }
             
         }){
             print("unecessary success?; or I always print?")
         }
-        
+        if (checkICS() == true) {
+            button.removeFromSuperview()
+        } else {
+            textView.removeFromSuperview()
+        }
+
         self.tableView.tableFooterView = customView
         //first launch code; currently to enable all settings
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
@@ -116,7 +146,9 @@ class TableViewController: UITableViewController {
         //UIApplication.shared.openURL(NSURL(string: "webcal://www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1")! as URL)
     }
     
-    func checkICS() -> Bool {
+
+    
+    func checkICS() -> Bool { //returns true if existing
         let eventStrore = EKEventStore()
         var alreadySubcribed = false
         var spin = true
@@ -125,10 +157,7 @@ class TableViewController: UITableViewController {
             let allCalendars = eventStrore.calendars(for: EKEntityType.event)
             for currentCal : EKCalendar in allCalendars {
                 if (currentCal.type == EKCalendarType.subscription && currentCal.title == "www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1") {
-                    print("Already Subscribed 2")
                     alreadySubcribed = true
-                    print("alreadysubscribed 3: \(alreadySubcribed)")
-
                 }
             }
             spin = false
@@ -150,6 +179,7 @@ class TableViewController: UITableViewController {
         } else {
             // Ouch, doSomething() threw an error.
         }*/
+        var spin = true
         eventStore.requestAccess(to: EKEntityType.event) { (granted, error) -> Void in
             let calendarList = eventStore.calendars(for: EKEntityType.event)
             var sacsIndex = 0
@@ -159,22 +189,29 @@ class TableViewController: UITableViewController {
                     sacsIndex = x
                 }
             }
-            if (self.checkICS() == false){
+            //if (self.checkICS() == false){
                 UIApplication.shared.openURL(URL(string: "webcal://www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1")!)//webcal://www.sacs.k12.in.us/site/handlers/icalfeed.ashx?MIID=1
-                //NEED:
-            } else {
-                if let result = try? eventStore.removeCalendar(calendarList[sacsIndex], commit: true) {
+            //} else {
+                /*if let result = try? eventStore.removeCalendar(calendarList[sacsIndex], commit: true) {
                     //eventStore.reset()
                     print(result)
                     print("removal success")
                 } else {
                     print("removal faliure")
-                }
+                }*/
                 //calendarList[0]
-            }
-            
+            //}
+            spin = false
         }
-        
+        while (spin == true) {
+            sleep(1)
+        }
+        self.tableView.tableFooterView?.subviews[1].removeFromSuperview()
+        let textView = UITextView(frame: CGRect(x: 0.0, y: 60, width: self.view.frame.width, height: 170))
+        textView.text = "Instructions to remove the calendar:\n   1) Go to the settings app\n   2) Select \"Calendar\"\n   3) Select \"Accounts\"\n   4) Select \"Subscribed Calendars\"\n   (the subtitle should include sacs)\n   5) Scroll down and select \"Delete\""
+        textView.font = .systemFont(ofSize: 18)
+        textView.isEditable = false
+        self.tableView.tableFooterView?.addSubview(textView)
         /*try {
             eventStore.removeCalendar(EKCalendar(, commit: true)
         }*/
@@ -213,7 +250,7 @@ class TableViewController: UITableViewController {
         switchDemo.isOn = settingsNS.bool(forKey: ((settingsDictionary.allValues[indexPath.item] as AnyObject) as! String))
         //finds mid y cordinant of cell; subtracts cell height*number of cells to make sure it is in the right cell, every cell it adds an extra cell's worth of height to .midY; subtracts 1/2 switch height to center switch
         switchDemo.frame.origin.y = cell.frame.midY-cell.frame.height*CGFloat(indexPath.item)-switchDemo.frame.height/2
-        switchDemo.frame.origin.x = cell.frame.width*0.8
+        switchDemo.frame.origin.x = UIScreen.main.bounds.width-70
         switchDemo.addTarget(self, action:#selector(buttonClicked), for: UIControlEvents.valueChanged)
         switches.append(switchDemo)
         cell.addSubview(switchDemo)
@@ -289,6 +326,9 @@ class TableViewController: UITableViewController {
         
         
         //doesn't currently enter this; perhaps it isn't using segue to transition?
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.orientationLock = UIInterfaceOrientationMask.all
+        }
         let destinationViewController = segue.destination as! WebView
         //destinationViewController.test = pageToOpen //note test does not exist anymore, this was a test
     }

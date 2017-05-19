@@ -17,10 +17,13 @@ class WebView: UIViewController, UIWebViewDelegate {
         //make sure to remove the observer when this view controller is dismissed/deallocated
         NotificationCenter.default.removeObserver(self, name: nil, object: nil)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.orientationLock = UIInterfaceOrientationMask.all
+        }
         webView.delegate = self
         let url = "http://sacs.school"//https://sacs-backend-chrisblutz.c9users.io/ or https://sacs-sacsnews.c9users.io
         //http://sacs.school
@@ -94,7 +97,7 @@ class WebView: UIViewController, UIWebViewDelegate {
             print("link")
             // Open links in Safari
             guard let url = request.url else { return true }
-            if(url.absoluteString.range(of: "sacs://") != nil )//will need to be changed for new site
+            if(url.absoluteString.range(of: "sacs://") != nil )//will need to be changed for new site  "/native/"
             {
                 print("got request")
                 // parse custom URL to extract parameter
@@ -103,7 +106,7 @@ class WebView: UIViewController, UIWebViewDelegate {
                 }
                 return false; // return false, so webView won't actually try to load this fake request
             }
-            if ((url.absoluteString.range(of: "sacsnews") != nil) || (url.absoluteString.range(of: "icalfeed.ashx") != nil)) {
+            if ((url.absoluteString.range(of: "ec2-13-58-42-230.us-east-2.compute.amazonaws.com/") != nil) || (url.absoluteString.range(of: "sacsnews") != nil) || (url.absoluteString.range(of: "icalfeed.ashx") != nil)) {
                 return true
             } else {
                 if #available(iOS 10.0, *) {
